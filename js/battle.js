@@ -603,6 +603,16 @@ document
 
 .getElementById("battleForm")
 
+editingId = null;
+
+updateKD();
+
+updateWeapon();
+
+updateStage();
+
+await renderBattleList();
+    
 .addEventListener(
 
 "submit",
@@ -758,3 +768,48 @@ function getFilteredBattles(list){
     return battles;
 
 }
+// ======================================
+// Initialize Battle
+// ======================================
+
+async function initializeBattle(){
+
+    try{
+
+        loadWeapons();
+
+        loadStages();
+
+        updateWeapon();
+
+        updateStage();
+
+        updateKD();
+
+        await renderBattleList();
+
+        console.log("Battle Initialized");
+
+    }catch(error){
+
+        console.error(error);
+
+        UI.showToast(
+
+            "初期化に失敗しました",
+
+            "error"
+
+        );
+
+    }
+
+}
+
+window.addEventListener(
+
+    "DOMContentLoaded",
+
+    initializeBattle
+
+);
