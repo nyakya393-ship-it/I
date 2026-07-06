@@ -79,3 +79,245 @@ function createBattleData(){
     };
 
 }
+
+// ======================================
+// Preview Update
+// ======================================
+
+function updateWeapon(){
+
+    const weapon=weapons[weaponSelect.value];
+
+    if(!weapon)return;
+
+    weaponPreview.src=weapon.image;
+
+    subPreview.src=weapon.subImage;
+
+    specialPreview.src=weapon.specialImage;
+
+    subSelect.innerHTML=
+        `<option>${weapon.sub}</option>`;
+
+    specialSelect.innerHTML=
+        `<option>${weapon.special}</option>`;
+
+}
+
+function updateStage(){
+
+    const stage=stages[stageSelect.value];
+
+    if(!stage)return;
+
+    stagePreview.src=stage.image;
+
+}
+
+// ======================================
+// K/D
+// ======================================
+
+function updateKD(){
+
+    const kill=
+        Number(
+            document.getElementById("battleKill").value
+        );
+
+    const death=
+        Number(
+            document.getElementById("battleDeath").value
+        );
+
+    const kd=
+        document.getElementById("battleKD");
+
+    if(death===0){
+
+        kd.value=kill.toFixed(2);
+
+    }
+
+    else{
+
+        kd.value=(kill/death).toFixed(2);
+
+    }
+
+}
+
+// ======================================
+// Event
+// ======================================
+
+weaponSelect.addEventListener(
+
+    "change",
+
+    updateWeapon
+
+);
+
+stageSelect.addEventListener(
+
+    "change",
+
+    updateStage
+
+);
+
+document.getElementById("battleKill")
+.addEventListener(
+
+    "input",
+
+    updateKD
+
+);
+
+document.getElementById("battleDeath")
+.addEventListener(
+
+    "input",
+
+    updateKD
+
+);
+
+// ======================================
+// Start
+// ======================================
+
+window.addEventListener(
+
+    "load",
+
+    ()=>{
+
+        loadWeapons();
+
+        loadStages();
+
+        updateKD();
+
+    }
+
+);
+// ======================================
+// Save Battle
+// ======================================
+
+async function saveBattle(){
+
+    const battle={
+
+        id:Utils.createId(),
+
+        date:document.getElementById("battleDate").value,
+
+        time:document.getElementById("battleTime").value,
+
+        mode:document.getElementById("battleMode").value,
+
+        rule:document.getElementById("battleRule").value,
+
+        stage:document.getElementById("battleStage").value,
+
+        weapon:document.getElementById("battleWeapon").value,
+
+        sub:document.getElementById("battleSub").value,
+
+        special:document.getElementById("battleSpecial").value,
+
+        result:getSelectedResult(),
+
+        kill:Number(document.getElementById("battleKill").value),
+
+        assist:Number(document.getElementById("battleAssist").value),
+
+        death:Number(document.getElementById("battleDeath").value),
+
+        specialCount:Number(document.getElementById("battleSpecialCount").value),
+
+        paint:Number(document.getElementById("battlePaint").value),
+
+        xp:Number(document.getElementById("battleXP").value),
+
+        rank:document.getElementById("battleRank").value,
+
+        knockout:document.getElementById("battleKnockout").value==="true",
+
+        memo:document.getElementById("battleMemo").value,
+
+        favorite:document.getElementById("battleFavorite").checked,
+
+        createdAt:new Date().toISOString()
+
+    };
+
+    await Storage.saveBattle(battle);
+
+    UI.showToast("戦績を保存しました！");
+
+    document.getElementById("battleForm").reset();
+
+}
+// ======================================
+// Result
+// ======================================
+
+let selectedResult="WIN";
+
+function getSelectedResult(){
+
+    return selectedResult;
+
+}
+
+document.querySelectorAll(".resultButton")
+
+.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        document
+
+        .querySelectorAll(".resultButton")
+
+        .forEach(b=>{
+
+            b.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        selectedResult=
+
+            button.dataset.result;
+
+    });
+
+});
+// ======================================
+// Form Submit
+// ======================================
+
+document
+
+.getElementById("battleForm")
+
+.addEventListener(
+
+"submit",
+
+async e=>{
+
+    e.preventDefault();
+
+    await saveBattle();
+
+}
+
+);
