@@ -210,10 +210,64 @@ window.addEventListener(
 
 );
 // ======================================
+// Validation
+// ======================================
+
+function validateBattle(){
+
+    if(!battleDate.value){
+
+        UI.showToast("日付を入力してください","error");
+
+        battleDate.focus();
+
+        return false;
+
+    }
+
+    if(!battleWeapon.value){
+
+        UI.showToast("ブキを選択してください","error");
+
+        battleWeapon.focus();
+
+        return false;
+
+    }
+
+    if(!battleStage.value){
+
+        UI.showToast("ステージを選択してください","error");
+
+        battleStage.focus();
+
+        return false;
+
+    }
+
+    if(!battleRule.value){
+
+        UI.showToast("ルールを選択してください","error");
+
+        battleRule.focus();
+
+        return false;
+
+    }
+
+    return true;
+
+}
+// ======================================
 // Save Battle
 // ======================================
 
 async function saveBattle(){
+    if(!validateBattle()){
+
+    return;
+
+}
 
     const battle={
 
@@ -480,6 +534,35 @@ document.querySelectorAll(".resultButton")
     });
 
 });
+// ======================================
+// Image Preview
+// ======================================
+
+const imageInput=document.getElementById("battleImages");
+
+const preview=document.getElementById("imagePreviewList");
+
+if(imageInput){
+
+    imageInput.addEventListener("change",()=>{
+
+        preview.innerHTML="";
+
+        [...imageInput.files].forEach(file=>{
+
+            const img=document.createElement("img");
+
+            img.src=URL.createObjectURL(file);
+
+            img.className="previewImage";
+
+            preview.appendChild(img);
+
+        });
+
+    });
+
+}
 // ======================================
 // Form Submit
 // ======================================
