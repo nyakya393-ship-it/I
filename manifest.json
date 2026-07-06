@@ -11,12 +11,12 @@
   "lang": "ja",
   "icons": [
     {
-      "src": "assets/logo/icon-192.png",
+      "src": "assets/logo/icon-192.PNG",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "assets/logo/icon-512.png",
+      "src": "assets/logo/icon-512.PNG",
       "sizes": "512x512",
       "type": "image/png"
     }
