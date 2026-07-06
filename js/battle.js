@@ -376,11 +376,13 @@ async function deleteBattle(id){
 
     await Storage.deleteBattle(id);
 
-    UI.showToast(
+await renderBattleList();
 
-        "戦績を削除しました"
+UI.showToast(
 
-    );
+    "削除しました"
+
+);
 
     renderBattleList();
 
@@ -427,6 +429,12 @@ async function toggleFavorite(id){
 // ======================================
 
 async function renderBattleList(){
+
+    if(!list){
+
+    return;
+
+}
 
     const list=
 
