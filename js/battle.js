@@ -190,6 +190,30 @@ document.getElementById("battleDeath")
 
 );
 
+historySearch.addEventListener(
+
+"input",
+
+renderBattleList
+
+);
+
+historySort.addEventListener(
+
+"change",
+
+renderBattleList
+
+);
+
+historyFilter.addEventListener(
+
+"change",
+
+renderBattleList
+
+);
+
 // ======================================
 // Start
 // ======================================
@@ -420,9 +444,17 @@ async function renderBattleList(){
 
     list.innerHTML="";
 
-    const battles=
+   let battles=
 
-        await Storage.getBattles();
+await Storage.getBattles();
+
+battles=
+
+getFilteredBattles(
+
+battles
+
+);
 
     battles.reverse().forEach(
 
